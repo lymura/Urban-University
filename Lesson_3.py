@@ -1,8 +1,8 @@
 name = 'Lyubov'    #Создайте переменную name и присвойте ей значение вашего имени
-print(name)   #Выведите значение переменной name на экран
+print('Name: ', name)   #Выведите значение переменной name на экран
 age = 64    #Создайте переменную age и присвойте ей значение вашего возраста
-print(age)  #Выведите значение переменной age на экран
+print('Age:', age)  #Выведите значение переменной age на экран
 age = age + 10  #Перезапишите в age текущее значение переменной age + новое
-print(age)
+print('New age:', age)
 is_student = True
-print(is_student)
+print('Is_student:', is_student)
