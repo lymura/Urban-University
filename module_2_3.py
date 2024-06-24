@@ -7,12 +7,11 @@ i = 0
 while i < num:
     if my_list[i] > 0:
         print(my_list[i])
-        i += 1
-    elif my_list[i] < 0:
 
+    elif my_list[i] < 0:
         break
 
-
+    i += 1
 
 
 
