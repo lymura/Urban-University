@@ -8,5 +8,5 @@ test_function()
 # Вызовите функцию inner_function вне функции test_function
     inner_function()
 
-#получиkb ошибку, потому что inner_function не доступна
+#получили ошибку, потому что inner_function не доступна
 # в глобальной области видимости
