@@ -4,17 +4,17 @@ import time
 class User:
     def __init__(self, nickname, password, age):
         self.nickname = nickname
-        self.password = self.hash_password(password)
+        self.password = hashlib.sha256(password.encode()).hexdigest()
         self.age = age
 
-    def hash_password(self, password):
-        return int(hashlib.sha256(password.encode()).hexdigest(), 16)
+    def __str__(self):
+        return f"User: {self.nickname}, Age: {self.age}"
 
 class Video:
     def __init__(self, title, duration, adult_mode=False):
         self.title = title
         self.duration = duration
-        self.time_now = 0
+        self.time_now = 1
         self.adult_mode = adult_mode
 
 class UrTube:
@@ -67,7 +67,7 @@ class UrTube:
                     print(second, end=' ', flush=True)
                     time.sleep(1)
                 print("Конец видео")
-                video.time_now = 0
+                video.time_now = 1
                 return
 
         print("Видео не найдено")
