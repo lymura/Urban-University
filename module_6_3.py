@@ -22,8 +22,8 @@ class Eagle(Animal):
 
 class Pegasus(Horse, Eagle):
     def __init__(self):
-        super().__init__()
-        self.sound = 'I train, eat, sleep, and repeat'
+        Horse.__init__(self)
+        Eagle.__init__(self)
 
     def move(self, dx, dy):
         Horse.run(self, dx)
@@ -45,3 +45,4 @@ p1.move(-5, 20)
 print(p1.get_pos())  # (5, 35)
 
 p1.voice()  # I train, eat, sleep, and repeat
+
