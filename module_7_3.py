@@ -1,6 +1,4 @@
 import string
-import os
-
 
 class WordsFinder:
     def __init__(self, *file_names):
@@ -8,43 +6,40 @@ class WordsFinder:
 
     def get_all_words(self):
         all_words = {}
-        punctuation = set(string.punctuation + ' -')
-
         for file_name in self.file_names:
-            file_name = os.path.abspath(file_name)
-            print(f"Checking file: {file_name}")  # Выводим путь для проверки
-            if not os.path.isfile(file_name):
-                raise FileNotFoundError(f"The file {file_name} does not exist.")
-
-            with open(file_name, 'r', encoding='utf-8') as file:
-                words = []
-                for line in file:
-                    line = line.lower()
-                    line = ''.join(ch if ch not in punctuation else ' ' for ch in line)
-                    words.extend(line.split())
-                all_words[file_name] = words
+            try:
+                with open(file_name, 'r', encoding='utf-8') as file:
+                    content = file.read().lower()
+                    for char in [',', '.', '=', '!', '?', ';', ':', ' - ']:
+                        content = content.replace(char, ' ')
+                    words = content.split()
+                    all_words[file_name] = words
+            except FileNotFoundError:
+                all_words[file_name] = []
         return all_words
 
     def find(self, word):
         word = word.lower()
+        positions = {}
         all_words = self.get_all_words()
-        result = {}
-        for file_name, words in all_words.items():
+        for name, words in all_words.items():
             if word in words:
-                result[file_name] = words.index(word) + 1
-        return result
+                positions[name] = words.index(word) + 1
+            else:
+                positions[name] = None
+        return positions
 
     def count(self, word):
         word = word.lower()
+        counts = {}
         all_words = self.get_all_words()
-        result = {}
-        for file_name, words in all_words.items():
-            result[file_name] = words.count(word)
-        return result
-
+        for name, words in all_words.items():
+            counts[name] = words.count(word)
+        return counts
 
 # Пример использования
-finder2 = WordsFinder('/Users/user/PycharmProjects/Urban_Module_5/pythonProject/test_file.txt')
-print(finder2.get_all_words())  # Все слова
-print(finder2.find('TEXT'))  # 3 слово по счёту
+finder = WordsFinder('test_file.txt')
+print(finder.get_all_words())  # Все слова
+print(finder.find('TEXT'))     # Позиция первого вхождения
+print(finder.count('teXT'))    # Количество вхождений
 print(finder2.count('teXT'))  # 4 слова teXT в тексте всего
