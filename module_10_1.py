@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from time import sleep
 from threading import Thread
@@ -10,7 +9,7 @@ def write_words(word_count, file_name):
             sleep(0.1)
     print(f"Завершилась запись в файл {file_name}")
 
-# Measure time for sequential execution
+# Измеряем время для последовательного выполнения
 start_time = datetime.now()
 
 write_words(10, 'example1.txt')
@@ -23,7 +22,7 @@ time_res = end_time - start_time
 
 print(f"Время выполнения функций: {time_res} секунд")
 
-# Measure time for parallel execution using threads
+# Измеряем время для параллельного выполнения, используя threads
 start_time = datetime.now()
 
 threads = [
@@ -43,3 +42,4 @@ end_time = datetime.now()
 time_res = end_time - start_time
 
 print(f"Работа потоков: {time_res} секунд")
+
