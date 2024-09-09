@@ -48,23 +48,23 @@ class Cafe:
                     new_guest.start()
                     print(f"{new_guest.name} вышел(-ла) из очереди и сел(-а) за стол номер {table.number}")
 
-# Creating tables
+# Создание столов
 tables = [Table(number) for number in range(1, 6)]
 
-# Guest names
+# Имена гостей
 guests_names = [
     'Maria', 'Oleg', 'Vakhtang', 'Sergey', 'Darya', 'Arman',
     'Vitoria', 'Nikita', 'Galina', 'Pavel', 'Ilya', 'Alexandra'
 ]
 
-# Creating guests
+# Создание гостей
 guests = [Guest(name) for name in guests_names]
 
-# Filling the cafe with tables
+# Заполнение кафе столами
 cafe = Cafe(*tables)
 
-# Receiving guests
+# Приём гостей
 cafe.guest_arrival(*guests)
 
-# Serving guests
+# Обслуживание гостей
 cafe.discuss_guests()
