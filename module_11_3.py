@@ -37,3 +37,6 @@ print(number_info)
 
 object_info = introspection_info(instance)
 print(object_info)
+
+number_info = introspection_info(42)
+print('number_info:', number_info)
