@@ -1,6 +1,4 @@
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import Message
-from aiogram.dispatcher import FSMContext
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
@@ -19,51 +17,37 @@ class UserState(StatesGroup):
 async def start(message):
     await message.answer('Привет! Я бот помогающий твоему здоровью.')
 
-# Функции для обработки состояний
-
-# set_age
-@dp.message_handler(text="Calories")
-async def set_age(message: types.Message):
+# Обработчик команды 'Calories'
+@dp.message_handler(text='Calories')
+async def set_age(message):
     await message.answer("Введите свой возраст:")
     await UserState.age.set()
 
-
-# Состояние возраста
 @dp.message_handler(state=UserState.age)
-async def set_growth(message: types.Message, state: FSMContext):
-    async with state.proxy() as data:
-        data['age'] = int(message.text)
+async def set_growth(message, state):
+    await state.update_data(age=message.text)
+    await message.answer("Введите свой рост:")
+    await UserState.growth.set()
 
-    await message.answer("Введите свой рост (в см):")
-    await UserState.next()  # Переход к следующему состоянию (ожидание роста)
-
-# Состояние роста
 @dp.message_handler(state=UserState.growth)
-async def set_weight(message: types.Message, state: FSMContext):
-    async with state.proxy() as data:
-        data['growth'] = float(message.text)
+async def set_weight(message, state):
+    await state.update_data(growth=message.text)
+    await message.answer("Введите свой вес:")
+    await UserState.weight.set()
 
-    await message.answer("Введите свой вес (в кг):")
-    await UserState.next()  # Переход к следующему состоянию (ожидание веса)
-
-# Состояние веса
 @dp.message_handler(state=UserState.weight)
-async def send_calories(message: types.Message, state: FSMContext):
-    async with state.proxy() as data:
-        data['weight'] = float(message.text)
+async def send_calories(message, state):
+    await state.update_data(weight=message.text)
+    data = await state.get_data()
 
-    # Получим все данные из состояния
-    age = data['age']
-    growth = data['growth']
-    weight = data['weight']
+    # Calculate calorie norm using the Mifflin - St Jeor formula
+    # Example formula calculation for women:
+    # BMR = 10 × weight + 6.25 × height - 5 × age - 161.
 
-    # Формула Миффлина - Сан Жеора для мужчин
-    calories_norm = 10 * weight + 6.25 * growth - 5 * age + 5
+    bmr = 10 * float(data['weight']) + 6.25 * float(data['growth']) - 5 * float(data['age']) - 161
 
-    answer_text = f"Норма калорий для вас составляет примерно {calories_norm:.0f} ккал."
-    await message.answer(answer_text)
+    await message.answer(f"Your daily calorie norm is: {bmr}")
 
-    # Завершение машины состояний
     await state.finish()
 
 if __name__ == "__main__":
