@@ -5,7 +5,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 import asyncio
 
-api = ' '
+api = '7807279654:AAFy1xZ_WK4RtT8IqQm_s_B-yDDsJdSkqYQ'
 bot = Bot(token = api)
 dp = Dispatcher(bot, storage = MemoryStorage())
 
@@ -66,3 +66,4 @@ async def all_message(message):
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
+
