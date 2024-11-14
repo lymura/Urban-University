@@ -5,7 +5,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 import asyncio
 
-api = '7807279654:AAFy1xZ_WK4RtT8IqQm_s_B-yDDsJdSkqYQ'
+api = ' '
 bot = Bot(token = api)
 dp = Dispatcher(bot, storage = MemoryStorage())
 
@@ -15,6 +15,10 @@ class UserState(StatesGroup):
     growth = State()
     weight = State()
 
+@dp.message_handler(commands = ['start'])
+async def start(message):
+    await message.answer('Привет! Я бот помогающий твоему здоровью.')
+
 # Создаем клавиатуру с двумя кнопками
 #@dp.message_handler(text='Рассчитать')
 async def start(message):
@@ -23,8 +27,6 @@ async def start(message):
     button2 = KeyboardButton('Информация')
     keyboard.add(button1, button2)
     await message.answer('Выберите действие:', reply_markup=keyboard)
-
-    await message.answer('Привет! Я бот помогающий твоему здоровью.', reply_markup=keyboard)
 
 @dp.message_handler(lambda message: message.text == 'Рассчитать')
 async def set_age(message: types.Message):
@@ -58,6 +60,9 @@ async def send_calories(message, state):
 
     await state.finish()
 
+@dp.message_handler()
+async def all_message(message):
+    await message.answer('Введите команду /start, чтобы начать общение.')
+
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
-
