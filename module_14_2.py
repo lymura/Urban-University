@@ -6,7 +6,7 @@ cursor = connection.cursor()
 
 # Создание таблицы Users, если она еще не существует
 cursor.execute('''CREATE TABLE IF NOT EXISTS Users
-                  (id INTEGER PRIMARY KEY, 
+                  (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                    username TEXT NOT NULL,
                    email TEXT NOT NULL,
                    age INTEGER,
@@ -40,7 +40,7 @@ cursor.execute("DELETE FROM Users WHERE id % 3 = 0")
 connection.commit()
 
 # Удаление записи c ID = 6
-cursor.execute("DELETE FROM Users WHERE id = 6")#
+cursor.execute("DELETE FROM Users WHERE id = ?", (6,))
 connection.commit()
 
 # Подсчет общего количества записей
@@ -67,7 +67,6 @@ cursor.execute(select_query)
 results = cursor.fetchall()
 for row in results:
     print(f'Имя: {row[0]} | Почта: {row[1]} | Возраст: {row[2]} | Баланс: {row[3]}')
-# Закрытие соединения
 
-#connection.commit()
+# Закрытие соединения
 connection.close()
